@@ -6,3 +6,14 @@
   width: 700px !important;
   transition: all 0.2s linear;
 }
+
+@media screen and (max-width: 1024px) {
+  .input-group > .form-control {
+    min-height: calc(2.08rem + 2px);
+    height: calc(2.08rem + 2px);
+    padding-top: 0.27rem;
+    padding-bottom: 0.27rem;
+    width: 400px !important;
+    transition: all 0.2s linear;
+  }
+}
