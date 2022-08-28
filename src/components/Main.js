@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MDBContainer,
   MDBNavbar,
@@ -21,9 +21,28 @@ import {
   MDBTableBody,
 } from "mdb-react-ui-kit";
 import { Container } from "@mui/system";
+import { getBlocks } from "./Blockchain/Web3-api";
 
 export default function Main() {
+
+  const [docBlock, setDocBlock] = useState()
+
+  useEffect(()=>{
+    const init = async()=> {
+      const data = await getBlocks();
+      setDocBlock(data);
+    }
+    init();
+  },[])
+
+
   const [showBasic, setShowBasic] = useState(false);
+
+  const slicingHash =(str)=>{
+    const first = str.slice(0,10);
+    const second = str.slice(56);
+    return first + "..." + second;
+  }
 
   return (
     // NAVBAR
@@ -105,30 +124,23 @@ export default function Main() {
         <MDBTable style={{ marginTop: "50px", border: "1px solid" }}>
           <MDBTableHead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Handle</th>
+              <th scope="col">Block Number</th>
+              <th scope="col">Txn</th>
+              <th scope="col">Gas Limit</th>
+              <th scope="col">Time</th>
+              <th scope="col">Hash</th>
             </tr>
           </MDBTableHead>
           <MDBTableBody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
+           { docBlock && docBlock.map((item)=>{
+           return <tr>
+              <th scope="row">{item.number}</th>
+              <td>{item.txn}</td>
+              <td>{item.gasLimit}</td>
+              <td>{item.timestamp}</td>
+              <td>{slicingHash(item.hash)}</td>
             </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colSpan={2}>Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
+           })}
           </MDBTableBody>
         </MDBTable>
       </Container>
