@@ -7,6 +7,11 @@
   transition: all 0.2s linear;
 }
 
+thead {
+  background: #22abe3 !important;
+  color: #fff !important;
+}
+
 @media screen and (max-width: 1024px) {
   .input-group > .form-control {
     min-height: calc(2.08rem + 2px);
