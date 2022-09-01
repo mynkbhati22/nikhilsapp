@@ -15,3 +15,7 @@ export const getBlocks = async()=>{
     }
     return block;
 }
+
+export const searchTransection =async(trx)=>{
+    
+}
