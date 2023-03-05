@@ -1,273 +1,120 @@
 import React, { useState, useEffect } from "react";
-import {
-  MDBContainer,
-  MDBNavbar,
-  MDBNavbarBrand,
-  MDBNavbarToggler,
-  MDBIcon,
-  MDBNavbarNav,
-  MDBNavbarItem,
-  MDBNavbarLink,
-  MDBBtn,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
-  MDBDropdownLink,
-  MDBCollapse,
-  MDBInputGroup,
-  MDBTable,
-  MDBTableHead,
-  MDBTableBody,
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBBadge,
-} from "mdb-react-ui-kit";
-import { Container } from "@mui/system";
-import { getBlocks } from "./Blockchain/Web3-api";
-import { Grid } from "@mui/material";
+import Web3Modal from "web3modal";
+import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
+import WalletConnect from "@walletconnect/web3-provider";
+import Web3 from "web3/dist/web3.min.js";
+import {useDropzone} from 'react-dropzone'
+import { handleFiles, Verify_Contract } from "./upload";
 
 export default function Main() {
   const [docBlock, setDocBlock] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const init = async () => {
-      const data = await getBlocks();
-      setDocBlock(data);
-    };
-    init();
-  }, []);
+  // useEffect(() => {
+  //   const init = async () => {
+    
+  //   };
+  //   init();
+  // }, []);
 
-  const [showBasic, setShowBasic] = useState(false);
+  // const providerOptions = {
+  //   coinbasewallet: {
+  //     package: CoinbaseWalletSDK, 
+  //     options: {
+  //       appName: "Web 3 Modal Demo",
+  //       infuraId: process.env.INFURA_KEY,
+  //       rpc:"https://mainnet.infura.io/v3/"
+  //     }
+  //   },
+  //   walletconnect: {
+  //     package: WalletConnect, 
+  //     options: {
+  //       infuraId: "process.env.INFURA_KEY",
+  //       rpc:{
+  //         1:"https://mainnet.infura.io/v3/",
+  //         56:"https://bsc-dataseed1.binance.org/"
+  //       }
+  //     }
+  //   }
+  // };
 
-  const slicingHash = (str) => {
-    const first = str.slice(0, 10);
-    const second = str.slice(56);
-    return first + "..." + second;
+  // const web3Modal = new Web3Modal({
+  //   cacheProvider: true, // optional
+  //   providerOptions // required
+  // });
+
+  // const [showBasic, setShowBasic] = useState(false);
+  // const [provider, setProvider] = useState();
+  // const [library, setLibrary] = useState();
+
+  // const slicingHash = (str) => {
+  //   const first = str.slice(0, 10);
+  //   const second = str.slice(56);
+  //   return first + "..." + second;
+  // };
+
+  // const connectWallet = async () => {
+  //   try {
+  //     const provider = await web3Modal.connect();
+  //     // console.log(provider)
+  //     setProvider(provider)
+  //     // const library = new Web3(provider)
+  //     console.log(web3Modal)
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // const dissconnection = async()=>{
+  //   try {
+  //    web3Modal.clearCachedProvider()
+  //   if (provider?.disconnect && typeof provider.disconnect === 'function') {
+  //     await provider.disconnect()
+  //   }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+
+
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: async (acceptedFiles) => {
+      setIsLoading(true);
+      await handleFiles(acceptedFiles);
+      setIsLoading(false);
+    },
+  });
+
+  const handleFileChange = (event) => {
+    console.log(event)
+    setSelectedFiles(event);
   };
 
+
+
+  // useEffect(() => {
+  //   // if (web3Modal.cachedProvider) {
+  //   //   connectWallet();
+  //   // }
+  // }, []);
+
+
   return (
-    // NAVBAR
     <>
-      <MDBNavbar expand="lg" light bgColor="light">
-        <MDBContainer fluid>
-          <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
-
-          <MDBNavbarToggler
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-            onClick={() => setShowBasic(!showBasic)}
-          >
-            <MDBIcon icon="bars" fas />
-          </MDBNavbarToggler>
-
-          <MDBCollapse navbar show={showBasic}>
-            <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
-              <MDBNavbarItem>
-                <MDBNavbarLink active aria-current="page" href="#">
-                  Home
-                </MDBNavbarLink>
-              </MDBNavbarItem>
-              <MDBNavbarItem>
-                <MDBNavbarLink href="#">Link</MDBNavbarLink>
-              </MDBNavbarItem>
-
-              <MDBNavbarItem>
-                <MDBDropdown>
-                  <MDBDropdownToggle tag="a" className="nav-link">
-                    Dropdown
-                  </MDBDropdownToggle>
-                  <MDBDropdownMenu>
-                    <MDBDropdownItem>
-                      <MDBDropdownLink>Action</MDBDropdownLink>
-                    </MDBDropdownItem>
-                    <MDBDropdownItem>
-                      <MDBDropdownLink>Another action</MDBDropdownLink>
-                    </MDBDropdownItem>
-                    <MDBDropdownItem>
-                      <MDBDropdownLink>Something else here</MDBDropdownLink>
-                    </MDBDropdownItem>
-                  </MDBDropdownMenu>
-                </MDBDropdown>
-              </MDBNavbarItem>
-
-              <MDBNavbarItem>
-                <MDBNavbarLink
-                  disabled
-                  href="#"
-                  tabIndex={-1}
-                  aria-disabled="true"
-                >
-                  Disabled
-                </MDBNavbarLink>
-              </MDBNavbarItem>
-            </MDBNavbarNav>
-
-            <MDBInputGroup
-              tag="form"
-              className="d-flex w-auto align-items-center"
-            >
-              <input
-                className="form-control"
-                placeholder="Type query"
-                aria-label="Search"
-                type="Search"
-              />
-              <MDBBtn outline className="mx-2">
-                Search
-              </MDBBtn>
-            </MDBInputGroup>
-          </MDBCollapse>
-        </MDBContainer>
-      </MDBNavbar>
-
-      {/* CARDS */}
-      <Container maxWidth="xl">
-        <Grid
-          container
-          spacing={2}
-          sx={{ marginTop: "20px", padding: "10px 20px" }}
-        >
-          <Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
-            <MDBCard className="mx-5">
-              <MDBCardBody>
-                <MDBCardTitle>GCS Market Cap</MDBCardTitle>
-                <h4
-                  style={{
-                    fontWeight: " 500",
-                    color: "#000000",
-                    fontSize: "20px",
-                  }}
-                >
-                  hello
-                  <MDBBadge color="success" className="mx-2">
-                    {/* <MDBIcon fas icon="chart-line" /> 70.32% */}
-                  </MDBBadge>
-                </h4>
-              </MDBCardBody>
-            </MDBCard>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
-            <MDBCard className="mx-5">
-              <MDBCardBody>
-                <MDBCardTitle>GCS Market Cap</MDBCardTitle>
-                <h4
-                  style={{
-                    fontWeight: " 500",
-                    color: "#000000",
-                    fontSize: "20px",
-                  }}
-                >
-                  hello
-                  <MDBBadge color="success" className="mx-2">
-                    {/* <MDBIcon fas icon="chart-line" /> 70.32% */}
-                  </MDBBadge>
-                </h4>
-              </MDBCardBody>
-            </MDBCard>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
-            <MDBCard className="mx-5">
-              <MDBCardBody>
-                <MDBCardTitle>GCS Market Cap</MDBCardTitle>
-                <h4
-                  style={{
-                    fontWeight: " 500",
-                    color: "#000000",
-                    fontSize: "20px",
-                  }}
-                >
-                  hello
-                  <MDBBadge color="success" className="mx-2">
-                    {/* <MDBIcon fas icon="chart-line" /> 70.32% */}
-                  </MDBBadge>
-                </h4>
-              </MDBCardBody>
-            </MDBCard>
-          </Grid>{" "}
-          <Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
-            <MDBCard className="mx-5">
-              <MDBCardBody>
-                <MDBCardTitle>GCS Market Cap</MDBCardTitle>
-                <h4
-                  style={{
-                    fontWeight: " 500",
-                    color: "#000000",
-                    fontSize: "20px",
-                  }}
-                >
-                  hello
-                  <MDBBadge color="success" className="mx-2">
-                    {/* <MDBIcon fas icon="chart-line" /> 70.32% */}
-                  </MDBBadge>
-                </h4>
-              </MDBCardBody>
-            </MDBCard>
-          </Grid>
-        </Grid>
-      </Container>
-
-      {/* TABLE */}
-      <Container maxWidth="xl">
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={12} md={12} xl={6}>
-            <MDBTable style={{ marginTop: "50px", border: "1px solid" }}>
-              <MDBTableHead>
-                <tr>
-                  <th scope="col">Block Number</th>
-                  <th scope="col">Txn</th>
-                  <th scope="col">Gas Limit</th>
-                  <th scope="col">Time</th>
-                  <th scope="col">Hash</th>
-                </tr>
-              </MDBTableHead>
-              <MDBTableBody>
-                {docBlock &&
-                  docBlock.map((item) => {
-                    return (
-                      <tr>
-                        <th scope="row">{item.number}</th>
-                        <td>{item.txn}</td>
-                        <td>{item.gasLimit}</td>
-                        <td>{item.timestamp}</td>
-                        <td>{slicingHash(item.hash)}</td>
-                      </tr>
-                    );
-                  })}
-              </MDBTableBody>
-            </MDBTable>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} xl={6}>
-            <MDBTable style={{ marginTop: "50px", border: "1px solid" }}>
-              <MDBTableHead>
-                <tr>
-                  <th scope="col">Block Number</th>
-                  <th scope="col">Txn</th>
-                  <th scope="col">Gas Limit</th>
-                  <th scope="col">Time</th>
-                  <th scope="col">Hash</th>
-                </tr>
-              </MDBTableHead>
-              <MDBTableBody>
-                {docBlock &&
-                  docBlock.map((item) => {
-                    return (
-                      <tr>
-                        <th scope="row">{item.number}</th>
-                        <td>{item.txn}</td>
-                        <td>{item.gasLimit}</td>
-                        <td>{item.timestamp}</td>
-                        <td>{slicingHash(item.hash)}</td>
-                      </tr>
-                    );
-                  })}
-              </MDBTableBody>
-            </MDBTable>
-          </Grid>
-        </Grid>
-      </Container>
+      <div>
+      <div {...getRootProps()}>
+      <input {...getInputProps()} />
+  
+        
+          <p>Drop the files here ...</p> 
+          <p>Drag 'n' drop some files here, or click to select files</p>
+      
+    </div>
+        <button onClick={()=>Verify_Contract()}>send</button>
+        {/* <button onClick={()=>dissconnection()}>DissConnect</button> */}
+      </div>
     </>
   );
 }
