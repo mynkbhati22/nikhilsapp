@@ -1,0 +1,63 @@
+{
+  "compiler": { "version": "0.8.19+commit.7dd6d404" },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [
+          { "internalType": "string", "name": "name_", "type": "string" },
+          { "internalType": "uint256", "name": "_number", "type": "uint256" }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint256", "name": "num", "type": "uint256" },
+          { "internalType": "string", "name": "_name", "type": "string" }
+        ],
+        "name": "_changeNumberofYouraddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getChangedname",
+        "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "toto",
+        "outputs": [
+          { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ],
+    "devdoc": { "kind": "dev", "methods": {}, "version": 1 },
+    "userdoc": { "kind": "user", "methods": {}, "version": 1 }
+  },
+  "settings": {
+    "compilationTarget": { "MyContract.sol": "Ballot" },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": { "bytecodeHash": "ipfs" },
+    "optimizer": { "enabled": false, "runs": 0 },
+    "remappings": []
+  },
+  "sources": {
+    "MyContract.sol": {
+      "keccak256": "0x785782545f3e610b9374ae9b80880437d3e04309ffc69e7d4f37c2b5c47f8487",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://1d5c3f01ad848b5bf94fa6727bd1499a08ca5a148baeda3aa9c576a9b08c2fb5",
+        "dweb:/ipfs/QmbBWwuc5HYNkCZL78QSzXoFM2n3dTrucyjFhk8PEFijV7"
+      ]
+    }
+  },
+  "version": 1
+}

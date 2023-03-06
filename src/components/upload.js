@@ -1,9 +1,12 @@
 import bytes from "bytes";
+
+
 const UI_MAX_FILE_SIZE = 30 * 1024 * 1024;
 const SERVER_URL = "http://localhost:5555"
 const ADD_FILES_URL = `${SERVER_URL}/session/input-files`;
 const VERIFY_VALIDATED_URL = `${SERVER_URL}/session/verify-validated`;
-const verificationID = "0xf7fa9a2325117c9765c43ea62289a367634d531fd6df29dfa0251348d40d9a7b"
+const RESTART_SESSION_URL = `${SERVER_URL}/session/clear`;
+const verificationID = "0x444e45c877a1930c5151965ce4a206172cd3c9e7b8c56d4e10ceb64ce6e87e12"
 
 
 const fetchAndUpdate = async (URL, fetchOptions) => {
@@ -23,7 +26,7 @@ const fetchAndUpdate = async (URL, fetchOptions) => {
 
 export const Verify_Contract = async() =>{
     const data = { 
-                address : "0x40eD56F577C142dE7D135E9F1C36dCCb5c730e77",
+                address : "0xb9aA8BB1D19E9DCf1AB7148ed12FcBf36972e6DE",
                 chainId : "880",
                 contextVariables: {
                     abiEncodedConstructorArguments: "",
@@ -39,6 +42,14 @@ export const Verify_Contract = async() =>{
           contracts: [data],
         }),
       })
+}
+
+export const restart_session = async()=>{
+   const data = await fetch(RESTART_SESSION_URL, {
+        credentials: "include",
+        method: "POST",
+      });
+    console.log("Clear file", data)
 }
 
 

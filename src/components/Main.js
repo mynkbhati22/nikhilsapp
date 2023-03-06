@@ -4,7 +4,7 @@ import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 import WalletConnect from "@walletconnect/web3-provider";
 import Web3 from "web3/dist/web3.min.js";
 import {useDropzone} from 'react-dropzone'
-import { handleFiles, Verify_Contract } from "./upload";
+import { handleFiles, Verify_Contract, restart_session } from "./upload";
 
 export default function Main() {
   const [docBlock, setDocBlock] = useState();
@@ -113,7 +113,7 @@ export default function Main() {
       
     </div>
         <button onClick={()=>Verify_Contract()}>send</button>
-        {/* <button onClick={()=>dissconnection()}>DissConnect</button> */}
+        <button onClick={()=>restart_session()}>Clear Files</button>
       </div>
     </>
   );
